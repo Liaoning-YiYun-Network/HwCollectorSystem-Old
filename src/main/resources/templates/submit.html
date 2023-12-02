@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>来交作业啦！</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link crossorigin="anonymous" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" rel="stylesheet">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script crossorigin="anonymous"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./css/YY.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    <script>
+        function getUrlParam(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            let r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return unescape(r[2]);
+            return null; //返回参数值
+        }
+
+        function isQQBrowser() {
+            const ua = navigator.userAgent.toLowerCase();
+            return ua.indexOf('qq') > -1 && ua.indexOf('mqqbrowser') > -1;
+        }
+
+        function createOverlay(string) {
+            var overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            overlay.style.zIndex = '9999';
+
+            var message = document.createElement('div');
+            message.style.position = 'absolute';
+            message.style.top = '50%';
+            message.style.left = '50%';
+            message.style.transform = 'translate(-50%, -50%)';
+            message.style.color = '#fff';
+            message.style.fontSize = '24px';
+            message.style.textAlign = 'center';
+            message.innerText = string;
+
+            var arrow = document.createElement('div');
+            arrow.style.position = 'absolute';
+            arrow.style.top = '20px';
+            arrow.style.right = '20px';
+            arrow.style.fontSize = '56px';
+            arrow.style.color = '#fff';
+            arrow.innerText = '⬆️';
+
+            overlay.appendChild(message);
+            overlay.appendChild(arrow);
+            document.body.appendChild(overlay);
+        }
+
+        $(document).ready(() => {
+            // 检测是否在QQ内置浏览器打开
+            if (isQQBrowser()) {
+                // 创建一个全屏的灰色半透明蒙层，防止用户操作，中间显示提示信息
+                createOverlay("检测到你正在QQ内置浏览器中打开该页面，请复制网页地址到其他浏览器中打开，否则可能无法正常上传图片！\n你也可以点击右上角三个点后，找到浏览器选项，点击即可打开！");
+            }
+            $("#form").submit(() => {
+                let btn = $("#submit");
+                let file = $("#file").val();
+                if (file === "") {
+                    alert("请选择文件！");
+                    return false;
+                }
+                // 判断所有上传的文件的总大小是否超过45M
+                let files = $("#file")[0].files;
+                let size = 0;
+                for (let i = 0; i < files.length; i++) {
+                    size += files[i].size;
+                }
+                if (size > 45 * 1024 * 1024) {
+                    alert("上传的文件总大小不能超过45M，如果你是苹果设备，请关闭ProRAW后再拍照！");
+                    return false;
+                }
+                //检查姓名是否为中文，是否为2-3个字
+                let name = $("#name").val();
+                if (name === "") {
+                    alert("请输入姓名！");
+                    return false;
+                }
+                if (!/^[\u4e00-\u9fa5]{2,3}$/.test(name)) {
+                    alert("姓名必须为2-3个中文字符！");
+                    return false;
+                }
+                //检查学号是否为数字，是否为10位
+                let stu_no = $("#stu_no").val();
+                if (stu_no === "") {
+                    alert("请输入学号！");
+                    return false;
+                }
+                if (!/^\d{10}$/.test(stu_no)) {
+                    alert("学号必须为10位数字！");
+                    return false;
+                }
+                btn.attr("disabled", "disabled")
+                btn.val("正在提交，请不要关闭页面...")
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="row" style="padding: 50px">
+    <div class="col-md-1"></div>
+    <div class="panel panel-default col-md-5">
+        <h2>作业在线收集系统</h2>
+        <div class="panel-body">
+            <h2></h2>
+            <p><strong style="color: darkred">作业在<a th:text="${hwDdlDate}">12-30日21:59分</a>截止，请注意提交时间，逾期不候</strong>
+            </p>
+            <p>作业标题：<strong th:text="${hwTitle}"></strong></p>
+            <ul>
+                <li>作业内容：</li>
+                <li th:text="${hwContent}"></li>
+            </ul>
+        </div>
+        <h2>系统更新日志</h2>
+        <div class="panel-body">
+            <h2></h2>
+            <ul th:each="line : ${updateLog}">
+                <li th:text="${line}"></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="panel panel-default col-md-4">
+        <div class="panel-body">
+            <form action="/form" enctype="multipart/form-data" id="form" method="post">
+                <div class="form-group">
+                    <label for="stu_class"><span style="color: red">*</span>班级</label>
+                    <!--suppress HtmlFormInputWithoutLabel -->
+                    <select class="form-control" form="form" id="stu_class" name="stu_class">
+                        <option>地科23-1班</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="stu_no"><span style="color: red">*</span>学号</label>
+                    <input class="form-control" id="stu_no" name="stu_no" placeholder="输入学号" required type="text">
+                    <span class="help-block">请输入完整学号</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="name"><span style="color: red">*</span>姓名</label>
+                    <input class="form-control" id="name" maxlength="3" name="real_name" placeholder="输入姓名" required
+                           type="text">
+                </div>
+
+                <div class="form-group">
+                    <label for="file"><span style="color: red">*</span>文件上传</label>
+                    <input accept="image/*" id="file" multiple name="file" required type="file">
+                    <!--<p class="help-block">只支持zip格式，最好使用bandizip进行打包，<a href="https://dl.bandisoft.com/bandizip.std/BANDIZIP-SETUP-STD-ALL.EXE">点击下载bandizip官方版</a></p>-->
+                    <span class="help-block">可选择多张图片，如果浏览器跳转到了安卓文件选择框架（如果没跳转到相册页面基本上就是这个了），请尝试长按图片以多选！</span>
+                </div>
+
+                <div class="alert alert-danger" id="error" role="alert" th:if="${hasError}"
+                     th:text="${errorInfo}"></div>
+
+                <input class="btn btn-success btn-lg btn-block" id="submit" type="submit" value="立即提交">
+            </form>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<div class="row" style="margin: 30px 5%;">
+    <div class="panel panel-default col-md-12">
+        <div class="panel-body">
+            <ul class="nav nav-pills">
+                <li role="presentation" th:class="${classname == name ? 'active': ''}" th:each="name : ${classnames}"><a
+                        href="?classname=" th:href="${'?classname=' + name}" th:text="${name}">班级名称</a></li>
+            </ul>
+            <table class="table table-striped" style="margin-top: 30px;">
+                <thead>
+                <tr>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>作业文件</th>
+                </tr>
+                </thead>
+                <tr th:each="data : ${students}">
+                    <td th:text="${data.stu_no}"></td>
+                    <td th:text="${data.real_name}"></td>
+                    <td th:text="${data.fileName}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="footer-container" >
+    <footer>
+        Copyright Liaoning YiYun Network Technology Company All Rights Reserved 2023<br/>
+        <span>
+            <img src="./images/gongan.png">
+            <!-- 公安联网备案 -->
+            <a target="_blank" href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21050402000080" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+                <p style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">辽公网安备 21050402000080号</p>
+            </a>
+            <a href="https://beian.miit.gov.cn/" target="_blank" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+                <p style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">辽ICP备2023007213号-1</p>
+            </a>
+        </span>
+    </footer>
+</div>
+</body>
+</html>

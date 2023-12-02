@@ -1,0 +1,23 @@
+.footer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10%; /* 这里设置一个适当的高度，例如全屏高度 */
+}
+
+footer {
+    height: 80px;
+    line-height: 40px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background: #333;
+    color: white;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+footer a {
+    color: white;
+    text-decoration: none;
+}

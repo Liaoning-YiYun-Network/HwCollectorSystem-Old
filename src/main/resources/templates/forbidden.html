@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>禁止访问</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link crossorigin="anonymous" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" rel="stylesheet">
+    <link rel="stylesheet" href="./css/YY.css" />
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script crossorigin="anonymous"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+<body style="display: flex; flex-flow: row; justify-content: center; align-items: center; height: 100vh; width: 100vw;">
+<div style="border-radius: 5px; overflow: hidden; ">
+    <div class="jumbotron" style="margin-bottom: 0;padding: 30px;">
+        <div class="container">
+            <h1 style="color: red">禁止访问</h1>
+            <p>由于多次违规访问，你的请求已被拒绝，请联系网站管理员处理！</p>
+            <p>你的IP为：<a id="ipAddr" th:text="${ipAddr}"></a></p>
+        </div>
+    </div>
+</div>
+<div class="footer-container" style="position: fixed; bottom: 0; left: 0; right: 0">
+    <footer>
+        Copyright Liaoning YiYun Network Technology Company All Rights Reserved 2023<br/>
+        <span>
+            <img src="./images/gongan.png">
+            <!-- 公安联网备案 -->
+            <a target="_blank" href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21050402000080" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+                <p style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">辽公网安备 21050402000080号</p>
+            </a>
+            <a href="https://beian.miit.gov.cn/" target="_blank" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+                <p style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">辽ICP备2023007213号-1</p>
+            </a>
+        </span>
+    </footer>
+</div>
+</body>
+</html>

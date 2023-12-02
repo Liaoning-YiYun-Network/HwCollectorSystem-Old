@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>作业发布页面</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link crossorigin="anonymous" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" rel="stylesheet">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script crossorigin="anonymous"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="./css/YY.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    <script>
+
+        function getUrlParam(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            let r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return unescape(r[2]);
+            return null; //返回参数值
+        }
+
+        $(document).ready(() => {
+            $("#form").submit(() => {
+                let btn = $("#submit");
+                btn.attr("disabled", "disabled")
+                btn.val("正在发布，请不要关闭页面...")
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="row" style="padding: 50px">
+    <div class="col-md-1"></div>
+    <div class="panel panel-default col-md-5">
+        <h2>发布在线作业</h2>
+        <br>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="panel panel-default col-md-4">
+        <div class="panel-body">
+            <form action="/hwpub" enctype="multipart/form-data" id="form" method="post">
+                <div class="form-group">
+                    <label for="stu_class"><span style="color: red">*</span>发布班级</label>
+                    <!--suppress HtmlFormInputWithoutLabel -->
+                    <select class="form-control" form="form" id="stu_class" name="hwClass">
+                        <option>地科23-1班</option>
+                    </select>
+
+                    <span class="help-block">仔细看，别选错了</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="homework_title"><span style="color: red">*</span>作业标题</label>
+                    <input class="form-control" id="homework_title" name="hwTitle" placeholder="输入作业标题" required
+                           type="text">
+                    <span class="help-block">请输入作业标题</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="homework_content"><span style="color: red">*</span>作业内容</label>
+                    <input class="form-control" id="homework_content" name="hwContent" placeholder="输入作业内容" required
+                           type="text">
+                </div>
+
+                <div class="form-group">
+                    <label for="homework_ddl_date"><span style="color: red">*</span>截止时间</label>
+                    <input class="form-control" id="homework_ddl_date" name="hwDdlDate" placeholder="输入作业截止日期"
+                           required type="text">
+                </div>
+
+                <div class="form-group">
+                    <label for="auth_token"><span style="color: red">*</span>鉴权密钥</label>
+                    <input class="form-control" id="auth_token" name="auth_token" placeholder="输入你的鉴权密钥" required
+                           type="text">
+                    <span class="help-block" style="color: red">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                            请输入你的鉴权密钥，不正确的鉴权密钥会导致你的作业发布失败</span>
+                </div>
+
+                <div class="alert alert-danger" id="error" role="alert" th:if="${hasError}"
+                     th:text="${errorInfo}"></div>
+
+                <input class="btn btn-success btn-lg btn-block" id="submit" type="submit" value="发布作业">
+            </form>
+            <!--搞两个换行-->
+            <br>
+            <!-- 点击跳转指定链接的按钮 -->
+            <button class="btn btn-primary btn-lg btn-block" id="download" onclick="window.location.href = '/download?className=' + $('#stu_class').val()"
+                    type="button">下载作业包
+            </button>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<div class="footer-container" >
+    <footer>
+        Copyright Liaoning YiYun Network Technology Company All Rights Reserved 2023<br/>
+        <span>
+            <img src="./images/gongan.png">
+            <!-- 公安联网备案 -->
+            <a target="_blank" href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21050402000080" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+                <p style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">辽公网安备 21050402000080号</p>
+            </a>
+            <a href="https://beian.miit.gov.cn/" target="_blank" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+                <p style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">辽ICP备2023007213号-1</p>
+            </a>
+        </span>
+    </footer>
+</div>
+</body>
+</html>
