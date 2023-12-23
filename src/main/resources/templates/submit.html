@@ -84,8 +84,8 @@
                 for (let i = 0; i < files.length; i++) {
                     size += files[i].size;
                 }
-                if (size > 45 * 1024 * 1024) {
-                    alert("上传的文件总大小不能超过45M，如果你是苹果设备，请关闭ProRAW后再拍照！");
+                if (size > 150 * 1024 * 1024) {
+                    alert("上传的文件总大小不能超过150M，如果你是苹果设备，请关闭ProRAW后再拍照！");
                     return false;
                 }
                 //检查姓名是否为中文，是否为2-3个字
